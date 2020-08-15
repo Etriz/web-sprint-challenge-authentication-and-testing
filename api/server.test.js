@@ -10,6 +10,7 @@ describe("server.js", () => {
     expect(process.env.DB_ENV).toBe("testing");
   });
 });
+
 describe("POST /register", () => {
   let res = {};
   beforeAll(async () => {
@@ -23,6 +24,7 @@ describe("POST /register", () => {
     expect(res.body.username).toBe("test");
   });
 });
+
 describe("POST /login", () => {
   let res = {};
   beforeAll(async () => {
@@ -39,17 +41,23 @@ describe("POST /login", () => {
     expect(res.body.jwt).toBeDefined();
   });
 });
-// describe("GET /jokes", () => {
-//   let res = {};
-//   beforeAll(async () => {
-//     res = await request(server)
-//       .get("/api/jokes")
-//       .send({
-//         headers: { accept: "application/json", Authorization: `bearer ${token}` },
-//       });
-//   });
-//   test("should return some data", async () => {
-//     console.log(res.status);
-//     // expect(res.body).toBe(200)
-//   });
-// });
+
+describe("GET /jokes", () => {
+  let res = {};
+  beforeAll(async () => {
+    res = await request(server)
+      .get("/api/jokes")
+      .set({
+        accept: "application/json",
+        Authorization: `bearer ${token}`,
+      });
+  });
+  test("should return 200 status", async () => {
+    //depends on the jokes API to be up and responding
+    expect(res.status).toBe(200);
+  });
+  test("should return some data", async () => {
+    //depends on the jokes API to be up and responding
+    expect(res.body).toBeDefined();
+  });
+});
